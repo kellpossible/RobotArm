@@ -4,6 +4,7 @@
 #include "PID.h"
 #include "Timer.h"
 #include "Timing.h"
+#include "ADC.h"
 
 struct Motor {
  PID pid_s; //each motor has its own pid
@@ -16,9 +17,11 @@ struct Motor {
 
 typedef struct Motor Motor;
 
-void Motor_init(Motor* this, Timing* timing);
+void Motor_init(Motor* this, Timing* timing, 
+ADC* adc, int adc_port);
 PID* Motor_get_pid(Motor* this);
 void Motor_set_angle(Motor* this, float target_angle);
 float Motor_get_angle(Motor* this);
+void Motor_break(Motor* this);
 
 #endif //MOTOR_H

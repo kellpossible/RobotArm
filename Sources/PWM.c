@@ -119,7 +119,7 @@ PWMDTY3   =   0;        //Set duty cycle to low in CCW direction
 void SET_MOTOR(float value){
   U8 dty;
   if(value == 0.0f){
-    printf("BREAK");
+    //printf("BREAK");
     //BREAK_MOTOR();
     return;
   }

@@ -21,7 +21,7 @@ struct StateMachine {
  Timing* timing;
  Timer timer_s; //StateMachine has its own timer
  Timer* timer;
- Motor* motor
+ Motor* motor;
  ADC* adc; 
  int last_state;
  int current_state;

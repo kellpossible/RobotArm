@@ -1,5 +1,7 @@
 #include "PID.h"
 #include "Types.h"
+#include "Utilities.h"
+
 #include <TermIO.h>
 #include <stdio.h>
 
@@ -30,11 +32,20 @@ float PID_get_prev_error(PID* this){
  return this->previous_errors[0]; 
 }
 
+void PID_print_errors(PID* this){
+  int i;
+  printf("Errors:");
+  for(i=0;i<MAX_PREV_ERRORS;i++){
+    printf(" %f",this->previous_errors[i]);
+  }
+  printf("\n");
+}
+
  //set all previous errors on the stack to DEFAULT_ERROR
 void PID_clear_prev_errors(PID* this){
 	int i;
 	for(i=0;i<MAX_PREV_ERRORS;i++){
-	  previous_errors[i] = DEFAULT_ERROR;
+	  this->previous_errors[i] = DEFAULT_ERROR;
 	} 
 }
 
@@ -64,7 +75,7 @@ float PID_update(PID* this, float measured_value, float dt) {
 	
 	
 	//calculate is steady state...
-	if(PID_get_avg_error(this) < this->SS_threshold){
+	if(abs_f(PID_get_avg_error(this)) < this->SS_threshold){
 	 this->is_SS = 1; 
 	}
 	
@@ -77,7 +88,7 @@ float PID_update(PID* this, float measured_value, float dt) {
 
 void PID_set_setpoint(PID* this, float setpoint) {
 	this->setpoint = setpoint;
-	this->steady_state = 0;
+	this->is_SS = 0;
 	PID_clear_prev_errors(this);
 }
 
@@ -92,7 +103,7 @@ void PID_set_Ki(PID* this, float Ki){
   this->Ki = Ki;
 }
 void PID_set_Kd(PID* this, float Kd){
-  this->Kd
+  this->Kd;
 }
 
 //returns a boolean depending on whether the PID is in a steady state

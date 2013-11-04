@@ -1,7 +1,7 @@
 #ifndef PID_H
 #define PID_H
 
-#define MAX_PREV_ERRORS 5
+#define MAX_PREV_ERRORS 8
 
 struct PID {
 	float Kp;
@@ -32,8 +32,10 @@ void PID_set_Kd(PID* this, float Kd);
 char PID_is_steady_state(PID* this);
 
 void PID_push_prev_error(PID* this, float error);
-void PID_get_avg_error(PID* this);
+float PID_get_avg_error(PID* this);
 float PID_get_prev_error(PID* this);
 void PID_clear_prev_errors(PID* this);
+
+void PID_print_errors(PID* this);
 
 #endif //PID_H

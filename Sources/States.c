@@ -53,7 +53,7 @@ void StateMachine_printstate(StateMachine* this, int state){
 void StateMachine_run(StateMachine* this){
 //todo should probably switch to function pointers
 //to represent the state switching
-  printf("Current State: ");
+  //printf("Current State: ");
   StateMachine_printstate(this, this->current_state);
   switch(this->current_state){
     case STATE_PICKUP:
@@ -73,7 +73,9 @@ void StateMachine_run(StateMachine* this){
 
 //state where the magnet is getting picked up
 void state_pickup (StateMachine* this){
+  delay(200);
   printf("Running state PICKUP\n");
+  ENABLE_MAGNET();
   delay(500);
   StateMachine_switch_state(this, STATE_CW);
 }
@@ -81,7 +83,6 @@ void state_pickup (StateMachine* this){
 //state where the arm is moving clockwise
 void state_cw (StateMachine* this){
   printf("Running state CW\n");
-  
   Motor_set_angle(this->motor, 0.0f);
   
   StateMachine_switch_state(this, STATE_DROP);
@@ -98,8 +99,9 @@ void state_ccw (StateMachine* this){
 
 //state where the arm is moving counter-clockwise
 void state_drop (StateMachine* this){
+  delay(200);
   printf("Running state DROP\n");
-  
+  DISABLE_MAGNET();
   delay(500);
   StateMachine_switch_state(this, STATE_CCW);
 }

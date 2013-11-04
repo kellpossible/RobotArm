@@ -33,6 +33,7 @@ Timing.c.o                              Model: SMALL,         Lang: ANSI-C
 Timer.c.o                               Model: SMALL,         Lang: ANSI-C
 Utilities.c.o                           Model: SMALL,         Lang: ANSI-C
 States.c.o                              Model: SMALL,         Lang: ANSI-C
+Motor.c.o                               Model: SMALL,         Lang: ANSI-C
 
 *********************************************************************************************
 STARTUP SECTION
@@ -42,7 +43,7 @@ _startupData is allocated at 0xC031 and uses 6 Bytes
 extern struct _tagStartup {
   unsigned nofZeroOut     1
   _Range   pZeroOut       0x900     6
-  _Copy    *toCopyDownBeg 0xD688
+  _Copy    *toCopyDownBeg 0xD816
 } _startupData;
 
 *********************************************************************************************
@@ -52,9 +53,9 @@ Section Name                    Size  Type     From       To       Segment
 .init                             49     R     0xC000     0xC030   ROM_C000
 .startData                        10     R     0xC031     0xC03A   ROM_C000
 .rodata                          212     R     0xC03B     0xC10E   ROM_C000
-.rodata1                         148     R     0xC10F     0xC1A2   ROM_C000
-.text                           4046     R     0xC1A3     0xD170   ROM_C000
-.copy                              2     R     0xD688     0xD689   ROM_C000
+.rodata1                         126     R     0xC10F     0xC18C   ROM_C000
+.text                           4466     R     0xC18D     0xD2FE   ROM_C000
+.copy                              2     R     0xD816     0xD817   ROM_C000
 .stack                           256   R/W      0x800      0x8FF   RAM
 .abs_section_8                     1   N/I        0x8        0x8   .absSeg0
 .abs_section_9                     1   N/I        0x9        0x9   .absSeg1
@@ -278,11 +279,11 @@ Section Name                    Size  Type     From       To       Segment
 .abs_section_16e                   2   N/I      0x16E      0x16F   .absSeg219
 .abs_section_17e                   2   N/I      0x17E      0x17F   .absSeg220
 .bss                               6   R/W      0x900      0x905   RAM
-RUNTIME                         1303     R     0xD171     0xD687   ROM_C000
+RUNTIME                         1303     R     0xD2FF     0xD815   ROM_C000
 .vectSeg221_vect                   2     R     0xFFFE     0xFFFF   .vectSeg221
 
 Summary of section sizes per section type:
-READ_ONLY (R):        168C (dec:     5772)
+READ_ONLY (R):        181A (dec:     6170)
 READ_WRITE (R/W):      106 (dec:      262)
 NO_INIT (N/I):         104 (dec:      260)
 
@@ -366,7 +367,7 @@ MODULE:                 -- mc9s12c32.c.o --
      _SPIBR                                      DA       1       1       0   .abs_section_da
      _SPISR                                      DB       1       1       0   .abs_section_db
      _SPIDR                                      DD       1       1       0   .abs_section_dd
-     _PWME                                       E0       1       1      12   .abs_section_e0
+     _PWME                                       E0       1       1      18   .abs_section_e0
      _PWMPOL                                     E1       1       1       4   .abs_section_e1
      _PWMCLK                                     E2       1       1       4   .abs_section_e2
      _PWMPRCLK                                   E3       1       1       2   .abs_section_e3
@@ -515,15 +516,15 @@ MODULE:                 -- mc9s12c32.c.o --
      _PWMPER01                                   F2       2       2       2   .abs_section_f2
      _PWMPER23                                   F4       2       2       2   .abs_section_f4
      _PWMPER45                                   F6       2       2       0   .abs_section_f6
-     _PWMDTY01                                   F8       2       2       2   .abs_section_f8
-     _PWMDTY23                                   FA       2       2       6   .abs_section_fa
+     _PWMDTY01                                   F8       2       2       6   .abs_section_f8
+     _PWMDTY23                                   FA       2       2       8   .abs_section_fa
      _PWMDTY45                                   FC       2       2       0   .abs_section_fc
      _CANRXTSR                                  16E       2       2       0   .abs_section_16e
      _CANTXTSR                                  17E       2       2       0   .abs_section_17e
 MODULE:                 -- main.c.o --
 - PROCEDURES:
-     StateMachine_test                         C1A3      6B     107       1   .text       
-     main                                      C20E       6       6       1   .text       
+     StateMachine_test                         C18D      55      85       1   .text       
+     main                                      C1E2       6       6       1   .text       
 - VARIABLES:
 MODULE:                 -- Start12.c.o --
 - PROCEDURES:
@@ -535,14 +536,14 @@ MODULE:                 -- Start12.c.o --
      __SEG_END_SSTACK                           900       0       0       1               
 MODULE:                 -- EMBEDDED.C.o (ansis.lib) --
 - PROCEDURES:
-     printf                                    C214      13      19       7   .text       
+     printf                                    C1E8      13      19       5   .text       
 - VARIABLES:
 MODULE:                 -- PRINTF.C.o (ansis.lib) --
 - PROCEDURES:
-     Ten                                       C227      AC     172       3   .text       
-     vprintf                                   C2D3     92D    2349     110   .text       
-     _out                                      CC00       C      12      17   .text       
-     set_printf                                CC0C       C      12       1   .text       
+     Ten                                       C1FB      AC     172       3   .text       
+     vprintf                                   C2A7     92D    2349     110   .text       
+     _out                                      CBD4       C      12      17   .text       
+     set_printf                                CBE0       C      12       1   .text       
 - VARIABLES:
      pow10                                     C03B      28      40       6   .rodata     
      pow16                                     C063      20      32       4   .rodata     
@@ -552,147 +553,162 @@ MODULE:                 -- PRINTF.C.o (ansis.lib) --
      pbuf                                       900       6       6      10   .bss        
 MODULE:                 -- FADD.C.o (ansis.lib) --
 - PROCEDURES:
-     F_ADDKL                                   D171      67     103       1   RUNTIME     
-     _FADD                                     D1D8      15      21       9   RUNTIME     
-     _FSUB                                     D1ED      13      19       3   RUNTIME     
-     _FNEG                                     D200       B      11       2   RUNTIME     
+     F_ADDKL                                   D2FF      67     103       1   RUNTIME     
+     _FADD                                     D366      15      21       9   RUNTIME     
+     _FSUB                                     D37B      13      19       3   RUNTIME     
+     _FNEG                                     D38E       B      11       3   RUNTIME     
 - VARIABLES:
 MODULE:                 -- FANSI.C.o (ansis.lib) --
 - PROCEDURES:
-     F_FREXP                                   D20B      1F      31       1   RUNTIME     
-     frexpf                                    D22A      19      25       1   RUNTIME     
+     F_FREXP                                   D399      1F      31       1   RUNTIME     
+     frexpf                                    D3B8      19      25       1   RUNTIME     
 - VARIABLES:
 MODULE:                 -- FCMP.C.o (ansis.lib) --
 - PROCEDURES:
-     _FCMP                                     D243      26      38       7   RUNTIME     
+     _FCMP                                     D3D1      26      38       6   RUNTIME     
 - VARIABLES:
 MODULE:                 -- FCONV.C.o (ansis.lib) --
 - PROCEDURES:
-     F_TOLONGK                                 D269      33      51       1   RUNTIME     
-     F_FRLONGK                                 D29C      1F      31       2   RUNTIME     
-     _FSFLOAT                                  D2BB      12      18       2   RUNTIME     
-     _FUFLOAT                                  D2CD      12      18       2   RUNTIME     
-     _FSTRUNC                                  D2DF      11      17       1   RUNTIME     
-     _FUTRUNC                                  D2F0       3       3       4   RUNTIME     
+     F_TOLONGK                                 D3F7      33      51       1   RUNTIME     
+     F_FRLONGK                                 D42A      1F      31       2   RUNTIME     
+     _FSFLOAT                                  D449      12      18       2   RUNTIME     
+     _FUFLOAT                                  D45B      12      18       2   RUNTIME     
+     _FSTRUNC                                  D46D      11      17       1   RUNTIME     
+     _FUTRUNC                                  D47E       3       3       4   RUNTIME     
 - VARIABLES:
 MODULE:                 -- FMUL.C.o (ansis.lib) --
 - PROCEDURES:
-     F_DIVKL                                   D2F3      8E     142       1   RUNTIME     
-     F_MULKL                                   D381      58      88       1   RUNTIME     
-     _FMUL                                     D3D9      14      20      14   RUNTIME     
-     _FDIV                                     D3ED      1E      30       2   RUNTIME     
+     F_DIVKL                                   D481      8E     142       1   RUNTIME     
+     F_MULKL                                   D50F      58      88       1   RUNTIME     
+     _FMUL                                     D567      14      20      14   RUNTIME     
+     _FDIV                                     D57B      1E      30       3   RUNTIME     
 - VARIABLES:
 MODULE:                 -- FREGS.C.o (ansis.lib) --
 - PROCEDURES:
-     F_PULK                                    D40B      15      21       4   RUNTIME     
-     F_PULL                                    D420      15      21       4   RUNTIME     
-     F_PSHK                                    D435      13      19       6   RUNTIME     
-     F_TLK                                     D448       D      13       1   RUNTIME     
-     F_XGKL                                    D455      21      33       2   RUNTIME     
-     F_CLRK                                    D476       B      11       2   RUNTIME     
-     F_MAXK                                    D481       9       9       2   RUNTIME     
-     F_NORMK                                   D48A      3E      62       4   RUNTIME     
+     F_PULK                                    D599      15      21       4   RUNTIME     
+     F_PULL                                    D5AE      15      21       4   RUNTIME     
+     F_PSHK                                    D5C3      13      19       6   RUNTIME     
+     F_TLK                                     D5D6       D      13       1   RUNTIME     
+     F_XGKL                                    D5E3      21      33       2   RUNTIME     
+     F_CLRK                                    D604       B      11       2   RUNTIME     
+     F_MAXK                                    D60F       9       9       2   RUNTIME     
+     F_NORMK                                   D618      3E      62       4   RUNTIME     
 - VARIABLES:
 MODULE:                 -- rtshc12.c.o (ansis.lib) --
 - PROCEDURES:
-     _BDIVMODS                                 D4C8       B      11       4   RUNTIME     
-     _LCMP_P                                   D4D3      15      21       3   RUNTIME     
-     _LNEG                                     D4E8       D      13       1   RUNTIME     
-     _LINC                                     D4F5       5       5       1   RUNTIME     
-     _lDivMod                                  D4FA      BE     190       4   RUNTIME     
-     _LDIVU                                    D5B8       E      14       1   RUNTIME     
-     _NEG_P                                    D5C6       F      15       5   RUNTIME     
-     _LDIVS                                    D5D5      35      53       2   RUNTIME     
-     _LMODU                                    D60A      11      17       1   RUNTIME     
-     _ILSEXT                                   D61B       7       7       5   RUNTIME     
-     _CASE_DIRECT_BYTE                         D622       5       5       1   RUNTIME     
-     _CASE_CHECKED_BYTE                        D627      14      20       2   RUNTIME     
-     _CASE_SEARCH_8                            D63B      17      23       1   RUNTIME     
-     _CASE_SEARCH_8_BYTE                       D652      1A      26       1   RUNTIME     
+     _BDIVMODS                                 D656       B      11       4   RUNTIME     
+     _LCMP_P                                   D661      15      21       3   RUNTIME     
+     _LNEG                                     D676       D      13       1   RUNTIME     
+     _LINC                                     D683       5       5       1   RUNTIME     
+     _lDivMod                                  D688      BE     190       4   RUNTIME     
+     _LDIVU                                    D746       E      14       1   RUNTIME     
+     _NEG_P                                    D754       F      15       5   RUNTIME     
+     _LDIVS                                    D763      35      53       3   RUNTIME     
+     _LMODU                                    D798      11      17       1   RUNTIME     
+     _ILSEXT                                   D7A9       7       7       6   RUNTIME     
+     _CASE_DIRECT_BYTE                         D7B0       5       5       1   RUNTIME     
+     _CASE_CHECKED_BYTE                        D7B5      14      20       2   RUNTIME     
+     _CASE_SEARCH_8                            D7C9      17      23       1   RUNTIME     
+     _CASE_SEARCH_8_BYTE                       D7E0      1A      26       1   RUNTIME     
 - VARIABLES:
 MODULE:                 -- VREGS.C.o (ansis.lib) --
 - PROCEDURES:
-     L_NEGK                                    D66C       7       7       2   RUNTIME     
-     L_PSHK                                    D673       8       8       1   RUNTIME     
-     UL_PULK                                   D67B       3       3       1   RUNTIME     
-     SL_PULK                                   D67E       A      10       1   RUNTIME     
+     L_NEGK                                    D7FA       7       7       2   RUNTIME     
+     L_PSHK                                    D801       8       8       1   RUNTIME     
+     UL_PULK                                   D809       3       3       1   RUNTIME     
+     SL_PULK                                   D80C       A      10       1   RUNTIME     
 - VARIABLES:
 MODULE:                 -- ADC.c.o --
 - PROCEDURES:
-     ADC_conversion_complete                   CC18       6       6       1   .text       
-     ADC_run                                   CC1E      10      16       1   .text       
-     ADC_get_value                             CC2E       9       9       1   .text       
-     ADC_init                                  CC37      20      32       1   .text       
+     ADC_conversion_complete                   CBEC       6       6       1   .text       
+     wait_adc                                  CBF2       E      14       2   .text       
+     ADC_run                                   CC00      37      55       1   .text       
+     ADC_push_value                            CC37      1E      30       1   .text       
+     ADC_calc_avg                              CC55      39      57       1   .text       
+     ADC_get_value                             CC8E      16      22       1   .text       
+     ADC_init                                  CCA4      1C      28       1   .text       
 - VARIABLES:
 MODULE:                 -- PID.c.o --
 - PROCEDURES:
-     PID_init                                  CC57      37      55       1   .text       
-     PID_update                                CC8E      DA     218       1   .text       
-     PID_set_setpoint                          CD68      11      17       1   .text       
+     PID_push_prev_error                       CCC0      36      54       1   .text       
+     PID_get_avg_error                         CCF6      47      71       1   .text       
+     PID_get_prev_error                        CD3D       B      11       1   .text       
+     PID_clear_prev_errors                     CD48      22      34       2   .text       
+     PID_init                                  CD6A      36      54       1   .text       
+     PID_update                                CDA0      EA     234       1   .text       
+     PID_set_setpoint                          CE8A      19      25       1   .text       
+     PID_is_steady_state                       CEA3       6       6       1   .text       
 - VARIABLES:
 MODULE:                 -- PWM.c.o --
 - PROCEDURES:
-     PWM_init                                  CD79      5D      93       1   .text       
-     CW_MOTOR_PWM                              CDD6      13      19       1   .text       
-     CCW_MOTOR_PWM                             CDE9      13      19       1   .text       
-     SET_MOTOR                                 CDFC      5B      91       1   .text       
+     PWM_init                                  CEA9      5D      93       1   .text       
+     CW_MOTOR_PWM                              CF06      13      19       1   .text       
+     CCW_MOTOR_PWM                             CF19      13      19       1   .text       
+     BREAK_MOTOR                               CF2C       7       7       1   .text       
+     SET_MOTOR                                 CF33      50      80       1   .text       
+     ENABLE_MAGNET                             CF83      14      20       1   .text       
+     DISABLE_MAGNET                            CF97       D      13       1   .text       
 - VARIABLES:
-     STRING.BREAK.1                            C10F       6       6       1   .rodata1    
 MODULE:                 -- TermIO.c.o --
 - PROCEDURES:
-     TERMIO_PutChar                            CE57       9       9       1   .text       
-     TERMIO_Init                               CE60       C      12       1   .text       
+     TERMIO_PutChar                            CFA4       9       9       1   .text       
+     TERMIO_Init                               CFAD       C      12       1   .text       
 - VARIABLES:
 MODULE:                 -- Timing.c.o --
 - PROCEDURES:
-     Timing_init                               CE6C      18      24       1   .text       
-     Timing_get_count                          CE84       6       6       2   .text       
-     power                                     CE8A      1A      26       1   .text       
-     calc_timer_clockrate                      CEA4      29      41       1   .text       
-     calc_tcnt_diff                            CECD      11      17       1   .text       
-     Timing_tcnt_to_seconds                    CEDE      22      34       1   .text       
-     delay                                     CF00      36      54       3   .text       
+     Timing_init                               CFB9      18      24       1   .text       
+     Timing_get_count                          CFD1       6       6       2   .text       
+     power                                     CFD7      1A      26       1   .text       
+     calc_timer_clockrate                      CFF1      29      41       1   .text       
+     calc_tcnt_diff                            D01A      11      17       1   .text       
+     Timing_tcnt_to_seconds                    D02B      22      34       1   .text       
+     delay                                     D04D      36      54       5   .text       
 - VARIABLES:
 MODULE:                 -- Timer.c.o --
 - PROCEDURES:
-     Timer_init                                CF36      15      21       1   .text       
-     Timer_reset                               CF4B       F      15       1   .text       
-     Timer_update                              CF5A      1C      28       1   .text       
-     Timer_get_seconds                         CF76       D      13       1   .text       
+     Timer_init                                D083      15      21       2   .text       
+     Timer_reset                               D098       F      15       1   .text       
+     Timer_update                              D0A7      1C      28       1   .text       
+     Timer_get_seconds                         D0C3       D      13       1   .text       
 - VARIABLES:
 MODULE:                 -- Utilities.c.o --
 - PROCEDURES:
-     bound_f                                   CF83      35      53       1   .text       
-     get_motor_angle                           CFB8      35      53       1   .text       
+     bound_f                                   D0D0      35      53       1   .text       
+     abs_f                                     D105       C      12       1   .text       
 - VARIABLES:
 MODULE:                 -- States.c.o --
 - PROCEDURES:
-     StateMachine_init                         CFED      1C      28       1   .text       
-     StateMachine_switch_state                 D009       D      13       4   .text       
-     StateMachine_printstate                   D016      26      38       1   .text       
-     StateMachine_run                          D03C      38      56       1   .text       
-     StateMachine_set_motor_angle              D074      87     135       2   .text       
-     state_pickup                              D0FB      1B      27       1   .text       
-     state_cw                                  D116      1F      31       1   .text       
-     state_ccw                                 D135      21      33       1   .text       
-     state_drop                                D156      1B      27       1   .text       
+     StateMachine_init                         D111      27      39       1   .text       
+     StateMachine_switch_state                 D138      10      16       4   .text       
+     StateMachine_printstate                   D148      27      39       1   .text       
+     StateMachine_run                          D16F      33      51       1   .text       
+     state_pickup                              D1A2      24      36       1   .text       
+     state_cw                                  D1C6      20      32       1   .text       
+     state_ccw                                 D1E6      20      32       1   .text       
+     state_drop                                D206      24      36       1   .text       
 - VARIABLES:
-     STRING.STATE_PICKUP..1                    C115       E      14       1   .rodata1    
-     STRING.STATE_CW..2                        C123       A      10       1   .rodata1    
-     STRING.STATE_CCW..3                       C12D       B      11       1   .rodata1    
-     STRING.STATE_DROP..4                      C138       C      12       1   .rodata1    
-     STRING.Current.State...5                  C144      10      16       1   .rodata1    
-     STRING.Running.state.PICKUP.6             C154      16      22       1   .rodata1    
-     STRING.Running.state.CW..7                C16A      12      18       1   .rodata1    
-     STRING.Running.state.CCW..8               C17C      13      19       1   .rodata1    
-     STRING.Running.state.DROP..9              C18F      14      20       1   .rodata1    
+     STRING.STATE_PICKUP..1                    C10F       E      14       1   .rodata1    
+     STRING.STATE_CW..2                        C11D       A      10       1   .rodata1    
+     STRING.STATE_CCW..3                       C127       B      11       1   .rodata1    
+     STRING.STATE_DROP..4                      C132       C      12       1   .rodata1    
+     STRING.Running.state.PICKUP.5             C13E      16      22       1   .rodata1    
+     STRING.Running.state.CW..6                C154      12      18       1   .rodata1    
+     STRING.Running.state.CCW..7               C166      13      19       1   .rodata1    
+     STRING.Running.state.DROP..8              C179      14      20       1   .rodata1    
+MODULE:                 -- Motor.c.o --
+- PROCEDURES:
+     Motor_init                                D22A      3B      59       1   .text       
+     Motor_set_angle                           D265      5C      92       2   .text       
+     Motor_get_angle                           D2C1      3B      59       1   .text       
+     Motor_break                               D2FC       3       3       1   .text       
+- VARIABLES:
 
 *********************************************************************************************
 MODULE STATISTIC
   Name                                      Data   Code  Const
 ---------------------------------------------------------------------------------------------
   mc9s12c32.c.o                              260      0      0
-  main.c.o                                     0    113      0
+  main.c.o                                     0     91      0
   Start12.c.o                                  0     49      0
   EMBEDDED.C.o (ansis.lib)                     0     19      0
   PRINTF.C.o (ansis.lib)                       6   2545    212
@@ -704,14 +720,15 @@ MODULE STATISTIC
   FREGS.C.o (ansis.lib)                        0    189      0
   rtshc12.c.o (ansis.lib)                      0    420      0
   VREGS.C.o (ansis.lib)                        0     28      0
-  ADC.c.o                                      0     63      0
-  PID.c.o                                      0    290      0
-  PWM.c.o                                      0    222      6
+  ADC.c.o                                      0    212      0
+  PID.c.o                                      0    489      0
+  PWM.c.o                                      0    251      0
   TermIO.c.o                                   0     21      0
   Timing.c.o                                   0    202      0
   Timer.c.o                                    0     77      0
-  Utilities.c.o                                0    106      0
-  States.c.o                                   0    388    142
+  Utilities.c.o                                0     65      0
+  States.c.o                                   0    281    126
+  Motor.c.o                                    0    213      0
   other                                      256     12      2
 
 *********************************************************************************************
@@ -719,13 +736,16 @@ SECTION USE IN OBJECT-ALLOCATION SECTION
 ---------------------------------------------------------------------------------------------
 SECTION: ".text"
   StateMachine_test main printf Ten vprintf _out set_printf 
-  ADC_conversion_complete ADC_run ADC_get_value ADC_init PID_init PID_update 
-  PID_set_setpoint PWM_init CW_MOTOR_PWM CCW_MOTOR_PWM SET_MOTOR TERMIO_PutChar 
-  TERMIO_Init Timing_init Timing_get_count power calc_timer_clockrate 
-  calc_tcnt_diff Timing_tcnt_to_seconds delay Timer_init Timer_reset 
-  Timer_update Timer_get_seconds bound_f get_motor_angle StateMachine_init 
-  StateMachine_switch_state StateMachine_printstate StateMachine_run 
-  StateMachine_set_motor_angle state_pickup state_cw state_ccw state_drop 
+  ADC_conversion_complete wait_adc ADC_run ADC_push_value ADC_calc_avg 
+  ADC_get_value ADC_init PID_push_prev_error PID_get_avg_error 
+  PID_get_prev_error PID_clear_prev_errors PID_init PID_update PID_set_setpoint 
+  PID_is_steady_state PWM_init CW_MOTOR_PWM CCW_MOTOR_PWM BREAK_MOTOR SET_MOTOR 
+  ENABLE_MAGNET DISABLE_MAGNET TERMIO_PutChar TERMIO_Init Timing_init 
+  Timing_get_count power calc_timer_clockrate calc_tcnt_diff 
+  Timing_tcnt_to_seconds delay Timer_init Timer_reset Timer_update 
+  Timer_get_seconds bound_f abs_f StateMachine_init StateMachine_switch_state 
+  StateMachine_printstate StateMachine_run state_pickup state_cw state_ccw 
+  state_drop Motor_init Motor_set_angle Motor_get_angle Motor_break 
 SECTION: ".bss"
   pbuf 
 SECTION: ".init"
@@ -733,10 +753,9 @@ SECTION: ".init"
 SECTION: ".rodata"
   pow10 pow16 pow8 fpow10 fpow_10 
 SECTION: ".rodata1"
-  STRING.BREAK.1 STRING.STATE_PICKUP..1 STRING.STATE_CW..2 STRING.STATE_CCW..3 
-  STRING.STATE_DROP..4 STRING.Current.State...5 STRING.Running.state.PICKUP.6 
-  STRING.Running.state.CW..7 STRING.Running.state.CCW..8 
-  STRING.Running.state.DROP..9 
+  STRING.STATE_PICKUP..1 STRING.STATE_CW..2 STRING.STATE_CCW..3 
+  STRING.STATE_DROP..4 STRING.Running.state.PICKUP.5 STRING.Running.state.CW..6 
+  STRING.Running.state.CCW..7 STRING.Running.state.DROP..8 
 SECTION: ".abs_section_8"
   _PORTE 
 SECTION: ".abs_section_9"
@@ -1285,7 +1304,7 @@ OBJECT LIST SORTED BY ADDRESS
      _SPIBR                                      DA       1       1       0   .abs_section_da
      _SPISR                                      DB       1       1       0   .abs_section_db
      _SPIDR                                      DD       1       1       0   .abs_section_dd
-     _PWME                                       E0       1       1      12   .abs_section_e0
+     _PWME                                       E0       1       1      18   .abs_section_e0
      _PWMPOL                                     E1       1       1       4   .abs_section_e1
      _PWMCLK                                     E2       1       1       4   .abs_section_e2
      _PWMPRCLK                                   E3       1       1       2   .abs_section_e3
@@ -1299,8 +1318,8 @@ OBJECT LIST SORTED BY ADDRESS
      _PWMPER01                                   F2       2       2       2   .abs_section_f2
      _PWMPER23                                   F4       2       2       2   .abs_section_f4
      _PWMPER45                                   F6       2       2       0   .abs_section_f6
-     _PWMDTY01                                   F8       2       2       2   .abs_section_f8
-     _PWMDTY23                                   FA       2       2       6   .abs_section_fa
+     _PWMDTY01                                   F8       2       2       6   .abs_section_f8
+     _PWMDTY23                                   FA       2       2       8   .abs_section_fa
      _PWMDTY45                                   FC       2       2       0   .abs_section_fc
      _PWMSDN                                     FE       1       1       0   .abs_section_fe
      _FCLKDIV                                   100       1       1       0   .abs_section_100
@@ -1419,108 +1438,120 @@ OBJECT LIST SORTED BY ADDRESS
      pow8                                      C083      2C      44       4   .rodata     
      fpow10                                    C0AF      30      48       1   .rodata     
      fpow_10                                   C0DF      30      48       1   .rodata     
-     STRING.BREAK.1                            C10F       6       6       1   .rodata1    
-     STRING.STATE_PICKUP..1                    C115       E      14       1   .rodata1    
-     STRING.STATE_CW..2                        C123       A      10       1   .rodata1    
-     STRING.STATE_CCW..3                       C12D       B      11       1   .rodata1    
-     STRING.STATE_DROP..4                      C138       C      12       1   .rodata1    
-     STRING.Current.State...5                  C144      10      16       1   .rodata1    
-     STRING.Running.state.PICKUP.6             C154      16      22       1   .rodata1    
-     STRING.Running.state.CW..7                C16A      12      18       1   .rodata1    
-     STRING.Running.state.CCW..8               C17C      13      19       1   .rodata1    
-     STRING.Running.state.DROP..9              C18F      14      20       1   .rodata1    
-     StateMachine_test                         C1A3      6B     107       1   .text       
-     main                                      C20E       6       6       1   .text       
-     printf                                    C214      13      19       7   .text       
-     Ten                                       C227      AC     172       3   .text       
-     vprintf                                   C2D3     92D    2349     110   .text       
-     _out                                      CC00       C      12      17   .text       
-     set_printf                                CC0C       C      12       1   .text       
-     ADC_conversion_complete                   CC18       6       6       1   .text       
-     ADC_run                                   CC1E      10      16       1   .text       
-     ADC_get_value                             CC2E       9       9       1   .text       
-     ADC_init                                  CC37      20      32       1   .text       
-     PID_init                                  CC57      37      55       1   .text       
-     PID_update                                CC8E      DA     218       1   .text       
-     PID_set_setpoint                          CD68      11      17       1   .text       
-     PWM_init                                  CD79      5D      93       1   .text       
-     CW_MOTOR_PWM                              CDD6      13      19       1   .text       
-     CCW_MOTOR_PWM                             CDE9      13      19       1   .text       
-     SET_MOTOR                                 CDFC      5B      91       1   .text       
-     TERMIO_PutChar                            CE57       9       9       1   .text       
-     TERMIO_Init                               CE60       C      12       1   .text       
-     Timing_init                               CE6C      18      24       1   .text       
-     Timing_get_count                          CE84       6       6       2   .text       
-     power                                     CE8A      1A      26       1   .text       
-     calc_timer_clockrate                      CEA4      29      41       1   .text       
-     calc_tcnt_diff                            CECD      11      17       1   .text       
-     Timing_tcnt_to_seconds                    CEDE      22      34       1   .text       
-     delay                                     CF00      36      54       3   .text       
-     Timer_init                                CF36      15      21       1   .text       
-     Timer_reset                               CF4B       F      15       1   .text       
-     Timer_update                              CF5A      1C      28       1   .text       
-     Timer_get_seconds                         CF76       D      13       1   .text       
-     bound_f                                   CF83      35      53       1   .text       
-     get_motor_angle                           CFB8      35      53       1   .text       
-     StateMachine_init                         CFED      1C      28       1   .text       
-     StateMachine_switch_state                 D009       D      13       4   .text       
-     StateMachine_printstate                   D016      26      38       1   .text       
-     StateMachine_run                          D03C      38      56       1   .text       
-     StateMachine_set_motor_angle              D074      87     135       2   .text       
-     state_pickup                              D0FB      1B      27       1   .text       
-     state_cw                                  D116      1F      31       1   .text       
-     state_ccw                                 D135      21      33       1   .text       
-     state_drop                                D156      1B      27       1   .text       
-     F_ADDKL                                   D171      67     103       1   RUNTIME     
-     _FADD                                     D1D8      15      21       9   RUNTIME     
-     _FSUB                                     D1ED      13      19       3   RUNTIME     
-     _FNEG                                     D200       B      11       2   RUNTIME     
-     F_FREXP                                   D20B      1F      31       1   RUNTIME     
-     frexpf                                    D22A      19      25       1   RUNTIME     
-     _FCMP                                     D243      26      38       7   RUNTIME     
-     F_TOLONGK                                 D269      33      51       1   RUNTIME     
-     F_FRLONGK                                 D29C      1F      31       2   RUNTIME     
-     _FSFLOAT                                  D2BB      12      18       2   RUNTIME     
-     _FUFLOAT                                  D2CD      12      18       2   RUNTIME     
-     _FSTRUNC                                  D2DF      11      17       1   RUNTIME     
-     _FUTRUNC                                  D2F0       3       3       4   RUNTIME     
-     F_DIVKL                                   D2F3      8E     142       1   RUNTIME     
-     F_MULKL                                   D381      58      88       1   RUNTIME     
-     _FMUL                                     D3D9      14      20      14   RUNTIME     
-     _FDIV                                     D3ED      1E      30       2   RUNTIME     
-     F_PULK                                    D40B      15      21       4   RUNTIME     
-     F_PULL                                    D420      15      21       4   RUNTIME     
-     F_PSHK                                    D435      13      19       6   RUNTIME     
-     F_TLK                                     D448       D      13       1   RUNTIME     
-     F_XGKL                                    D455      21      33       2   RUNTIME     
-     F_CLRK                                    D476       B      11       2   RUNTIME     
-     F_MAXK                                    D481       9       9       2   RUNTIME     
-     F_NORMK                                   D48A      3E      62       4   RUNTIME     
-     _BDIVMODS                                 D4C8       B      11       4   RUNTIME     
-     _LCMP_P                                   D4D3      15      21       3   RUNTIME     
-     _LNEG                                     D4E8       D      13       1   RUNTIME     
-     _LINC                                     D4F5       5       5       1   RUNTIME     
-     _lDivMod                                  D4FA      BE     190       4   RUNTIME     
-     _LDIVU                                    D5B8       E      14       1   RUNTIME     
-     _NEG_P                                    D5C6       F      15       5   RUNTIME     
-     _LDIVS                                    D5D5      35      53       2   RUNTIME     
-     _LMODU                                    D60A      11      17       1   RUNTIME     
-     _ILSEXT                                   D61B       7       7       5   RUNTIME     
-     _CASE_DIRECT_BYTE                         D622       5       5       1   RUNTIME     
-     _CASE_CHECKED_BYTE                        D627      14      20       2   RUNTIME     
-     _CASE_SEARCH_8                            D63B      17      23       1   RUNTIME     
-     _CASE_SEARCH_8_BYTE                       D652      1A      26       1   RUNTIME     
-     L_NEGK                                    D66C       7       7       2   RUNTIME     
-     L_PSHK                                    D673       8       8       1   RUNTIME     
-     UL_PULK                                   D67B       3       3       1   RUNTIME     
-     SL_PULK                                   D67E       A      10       1   RUNTIME     
+     STRING.STATE_PICKUP..1                    C10F       E      14       1   .rodata1    
+     STRING.STATE_CW..2                        C11D       A      10       1   .rodata1    
+     STRING.STATE_CCW..3                       C127       B      11       1   .rodata1    
+     STRING.STATE_DROP..4                      C132       C      12       1   .rodata1    
+     STRING.Running.state.PICKUP.5             C13E      16      22       1   .rodata1    
+     STRING.Running.state.CW..6                C154      12      18       1   .rodata1    
+     STRING.Running.state.CCW..7               C166      13      19       1   .rodata1    
+     STRING.Running.state.DROP..8              C179      14      20       1   .rodata1    
+     StateMachine_test                         C18D      55      85       1   .text       
+     main                                      C1E2       6       6       1   .text       
+     printf                                    C1E8      13      19       5   .text       
+     Ten                                       C1FB      AC     172       3   .text       
+     vprintf                                   C2A7     92D    2349     110   .text       
+     _out                                      CBD4       C      12      17   .text       
+     set_printf                                CBE0       C      12       1   .text       
+     ADC_conversion_complete                   CBEC       6       6       1   .text       
+     wait_adc                                  CBF2       E      14       2   .text       
+     ADC_run                                   CC00      37      55       1   .text       
+     ADC_push_value                            CC37      1E      30       1   .text       
+     ADC_calc_avg                              CC55      39      57       1   .text       
+     ADC_get_value                             CC8E      16      22       1   .text       
+     ADC_init                                  CCA4      1C      28       1   .text       
+     PID_push_prev_error                       CCC0      36      54       1   .text       
+     PID_get_avg_error                         CCF6      47      71       1   .text       
+     PID_get_prev_error                        CD3D       B      11       1   .text       
+     PID_clear_prev_errors                     CD48      22      34       2   .text       
+     PID_init                                  CD6A      36      54       1   .text       
+     PID_update                                CDA0      EA     234       1   .text       
+     PID_set_setpoint                          CE8A      19      25       1   .text       
+     PID_is_steady_state                       CEA3       6       6       1   .text       
+     PWM_init                                  CEA9      5D      93       1   .text       
+     CW_MOTOR_PWM                              CF06      13      19       1   .text       
+     CCW_MOTOR_PWM                             CF19      13      19       1   .text       
+     BREAK_MOTOR                               CF2C       7       7       1   .text       
+     SET_MOTOR                                 CF33      50      80       1   .text       
+     ENABLE_MAGNET                             CF83      14      20       1   .text       
+     DISABLE_MAGNET                            CF97       D      13       1   .text       
+     TERMIO_PutChar                            CFA4       9       9       1   .text       
+     TERMIO_Init                               CFAD       C      12       1   .text       
+     Timing_init                               CFB9      18      24       1   .text       
+     Timing_get_count                          CFD1       6       6       2   .text       
+     power                                     CFD7      1A      26       1   .text       
+     calc_timer_clockrate                      CFF1      29      41       1   .text       
+     calc_tcnt_diff                            D01A      11      17       1   .text       
+     Timing_tcnt_to_seconds                    D02B      22      34       1   .text       
+     delay                                     D04D      36      54       5   .text       
+     Timer_init                                D083      15      21       2   .text       
+     Timer_reset                               D098       F      15       1   .text       
+     Timer_update                              D0A7      1C      28       1   .text       
+     Timer_get_seconds                         D0C3       D      13       1   .text       
+     bound_f                                   D0D0      35      53       1   .text       
+     abs_f                                     D105       C      12       1   .text       
+     StateMachine_init                         D111      27      39       1   .text       
+     StateMachine_switch_state                 D138      10      16       4   .text       
+     StateMachine_printstate                   D148      27      39       1   .text       
+     StateMachine_run                          D16F      33      51       1   .text       
+     state_pickup                              D1A2      24      36       1   .text       
+     state_cw                                  D1C6      20      32       1   .text       
+     state_ccw                                 D1E6      20      32       1   .text       
+     state_drop                                D206      24      36       1   .text       
+     Motor_init                                D22A      3B      59       1   .text       
+     Motor_set_angle                           D265      5C      92       2   .text       
+     Motor_get_angle                           D2C1      3B      59       1   .text       
+     Motor_break                               D2FC       3       3       1   .text       
+     F_ADDKL                                   D2FF      67     103       1   RUNTIME     
+     _FADD                                     D366      15      21       9   RUNTIME     
+     _FSUB                                     D37B      13      19       3   RUNTIME     
+     _FNEG                                     D38E       B      11       3   RUNTIME     
+     F_FREXP                                   D399      1F      31       1   RUNTIME     
+     frexpf                                    D3B8      19      25       1   RUNTIME     
+     _FCMP                                     D3D1      26      38       6   RUNTIME     
+     F_TOLONGK                                 D3F7      33      51       1   RUNTIME     
+     F_FRLONGK                                 D42A      1F      31       2   RUNTIME     
+     _FSFLOAT                                  D449      12      18       2   RUNTIME     
+     _FUFLOAT                                  D45B      12      18       2   RUNTIME     
+     _FSTRUNC                                  D46D      11      17       1   RUNTIME     
+     _FUTRUNC                                  D47E       3       3       4   RUNTIME     
+     F_DIVKL                                   D481      8E     142       1   RUNTIME     
+     F_MULKL                                   D50F      58      88       1   RUNTIME     
+     _FMUL                                     D567      14      20      14   RUNTIME     
+     _FDIV                                     D57B      1E      30       3   RUNTIME     
+     F_PULK                                    D599      15      21       4   RUNTIME     
+     F_PULL                                    D5AE      15      21       4   RUNTIME     
+     F_PSHK                                    D5C3      13      19       6   RUNTIME     
+     F_TLK                                     D5D6       D      13       1   RUNTIME     
+     F_XGKL                                    D5E3      21      33       2   RUNTIME     
+     F_CLRK                                    D604       B      11       2   RUNTIME     
+     F_MAXK                                    D60F       9       9       2   RUNTIME     
+     F_NORMK                                   D618      3E      62       4   RUNTIME     
+     _BDIVMODS                                 D656       B      11       4   RUNTIME     
+     _LCMP_P                                   D661      15      21       3   RUNTIME     
+     _LNEG                                     D676       D      13       1   RUNTIME     
+     _LINC                                     D683       5       5       1   RUNTIME     
+     _lDivMod                                  D688      BE     190       4   RUNTIME     
+     _LDIVU                                    D746       E      14       1   RUNTIME     
+     _NEG_P                                    D754       F      15       5   RUNTIME     
+     _LDIVS                                    D763      35      53       3   RUNTIME     
+     _LMODU                                    D798      11      17       1   RUNTIME     
+     _ILSEXT                                   D7A9       7       7       6   RUNTIME     
+     _CASE_DIRECT_BYTE                         D7B0       5       5       1   RUNTIME     
+     _CASE_CHECKED_BYTE                        D7B5      14      20       2   RUNTIME     
+     _CASE_SEARCH_8                            D7C9      17      23       1   RUNTIME     
+     _CASE_SEARCH_8_BYTE                       D7E0      1A      26       1   RUNTIME     
+     L_NEGK                                    D7FA       7       7       2   RUNTIME     
+     L_PSHK                                    D801       8       8       1   RUNTIME     
+     UL_PULK                                   D809       3       3       1   RUNTIME     
+     SL_PULK                                   D80C       A      10       1   RUNTIME     
 
 *********************************************************************************************
 UNUSED-OBJECTS SECTION
 ---------------------------------------------------------------------------------------------
 NOT USED PROCEDURES
 main.c.o:
-  Timer_test PID_test PID_PWM_ADC_test ADC_test 
+  ADC_test 
 EMBEDDED.C.o (ansis.lib):
   scanf gets puts fopen fflush fclose fprintf fputs fputc fgetc remove clock 
   abort exit 
@@ -1538,30 +1569,31 @@ rtshc12.c.o (ansis.lib):
   _LMULS16x32 _LMODS _COPY _CASE_DIRECT _CASE_CHECKED _CASE_SEARCH 
   _CASE_SEARCH_BYTE _FCALL _FPCMP 
 PID.c.o:
-  PID_get_Kp 
-PWM.c.o:
-  BREAK_MOTOR ENABLE_MAGNET DISABLE_MAGNET 
+  PID_print_errors PID_get_Kp PID_set_Kp PID_set_Ki PID_set_Kd 
 TermIO.c.o:
   TERMIO_GetChar 
 Timing.c.o:
   Timing_get_clockrate Timing_get_seconds 
 Timer.c.o:
   Timer_get_count 
+Motor.c.o:
+  Motor_get_pid 
 NOT USED VARIABLES
 main.c.o:
-  STRING.Seconds...f..1 STRING.dt...f.pid_output....2 STRING.port.d..d...3 
-  STRING.dt...f.pid_output....4 STRING.sensor..d...d..5 
+  STRING.sensor..d...d..1 
 EMBEDDED.C.o (ansis.lib):
   STRING..1 
 FANSI.C.o (ansis.lib):
   infinity errno 
 rtshc12.c.o (ansis.lib):
   _PowOfTwo_8 _PowOfTwo_16 _PowOfTwo_32 errno 
+PID.c.o:
+  STRING.Errors..1 STRING...f.2 STRING...3 
 
 *********************************************************************************************
 COPYDOWN SECTION
 ---------------------------------------------------------------------------------------------
-------- ROM-ADDRESS: 0xD688 ---- SIZE       2 ---
+------- ROM-ADDRESS: 0xD816 ---- SIZE       2 ---
 Filling bytes inserted
  0000
 
@@ -1570,8 +1602,8 @@ OBJECT-DEPENDENCIES SECTION
 ---------------------------------------------------------------------------------------------
 Init                      USES _startupData 
 _Startup                  USES __SEG_END_SSTACK Init main 
-StateMachine_test         USES PWM_init PID_init ADC_init Timing_init 
-                                Timer_init StateMachine_init delay StateMachine_run 
+StateMachine_test         USES PWM_init ADC_init Timing_init Motor_init 
+                                StateMachine_init delay StateMachine_run 
 main                      USES TERMIO_Init StateMachine_test 
 printf                    USES TERMIO_PutChar set_printf vprintf 
 Ten                       USES fpow10 fpow_10 Ten _FMUL 
@@ -1582,15 +1614,24 @@ vprintf                   USES vprintf _out _CASE_SEARCH_8_BYTE
 _out                      USES pbuf 
 set_printf                USES pbuf 
 ADC_conversion_complete   USES _ATDSTAT0 
-ADC_run                   USES _ATDCTL45 ADC_conversion_complete 
+wait_adc                  USES _ATDCTL45 ADC_conversion_complete 
+ADC_run                   USES wait_adc ADC_push_value ADC_calc_avg 
+ADC_calc_avg              USES _ILSEXT _LDIVS 
 ADC_init                  USES _ATDCTL23 _ATDCTL45 _ATDDIEN 
-PID_update                USES _FSUB _FMUL _FADD _FDIV 
+PID_get_avg_error         USES _FADD _FDIV 
+PID_init                  USES PID_clear_prev_errors 
+PID_update                USES _FSUB _FMUL _FADD PID_get_prev_error _FDIV 
+                                PID_push_prev_error PID_get_avg_error abs_f _FCMP 
+PID_set_setpoint          USES PID_clear_prev_errors 
 PWM_init                  USES _PWME _MODRR _PWMPRCLK _PWMCLK _PWMPOL _PWMCAE 
                                 _PWMPER23 _PWMDTY23 _PWMPER01 _PWMDTY01 
 CW_MOTOR_PWM              USES _PWME _PWMDTY23 
 CCW_MOTOR_PWM             USES _PWME _PWMDTY23 
-SET_MOTOR                 USES STRING.BREAK.1 printf _FCMP _FMUL _FUTRUNC 
-                                CW_MOTOR_PWM _FNEG CCW_MOTOR_PWM 
+BREAK_MOTOR               USES _PWMDTY23 
+SET_MOTOR                 USES _FCMP _FMUL _FUTRUNC CW_MOTOR_PWM _FNEG 
+                                CCW_MOTOR_PWM 
+ENABLE_MAGNET             USES _PWME _PWMDTY01 
+DISABLE_MAGNET            USES _PWME _PWMDTY01 
 TERMIO_PutChar            USES _SCISR1 _SCIDRL 
 TERMIO_Init               USES _SCIBD _SCICR2 
 Timing_init               USES calc_timer_clockrate _TSCR1 _TSCR2 
@@ -1602,25 +1643,28 @@ Timer_init                USES Timer_reset Timing_get_count
 Timer_update              USES Timing_get_count calc_tcnt_diff 
 Timer_get_seconds         USES Timing_tcnt_to_seconds 
 bound_f                   USES _FCMP 
-get_motor_angle           USES ADC_run ADC_get_value _ILSEXT _FSFLOAT _FADD 
-                                _FMUL 
+abs_f                     USES _FNEG 
+StateMachine_init         USES Timer_init 
 StateMachine_printstate   USES _CASE_CHECKED_BYTE STRING.STATE_PICKUP..1 
                                 STRING.STATE_CW..2 STRING.STATE_CCW..3 STRING.STATE_DROP..4 
                                 printf 
-StateMachine_run          USES STRING.Current.State...5 printf 
-                                StateMachine_printstate _CASE_CHECKED_BYTE state_pickup state_cw 
-                                state_ccw state_drop 
-StateMachine_set_motor_angle USES PID_set_setpoint Timer_update 
-                                get_motor_angle Timer_get_seconds PID_update bound_f SET_MOTOR 
-                                _FADD _FCMP 
-state_pickup              USES STRING.Running.state.PICKUP.6 printf delay 
-                                StateMachine_switch_state 
-state_cw                  USES STRING.Running.state.CW..7 printf 
-                                StateMachine_set_motor_angle StateMachine_switch_state 
-state_ccw                 USES STRING.Running.state.CCW..8 printf 
-                                StateMachine_set_motor_angle StateMachine_switch_state 
-state_drop                USES STRING.Running.state.DROP..9 printf delay 
-                                StateMachine_switch_state 
+StateMachine_run          USES StateMachine_printstate _CASE_CHECKED_BYTE 
+                                state_pickup state_cw state_ccw state_drop 
+state_pickup              USES delay STRING.Running.state.PICKUP.5 printf 
+                                ENABLE_MAGNET StateMachine_switch_state 
+state_cw                  USES STRING.Running.state.CW..6 printf 
+                                Motor_set_angle StateMachine_switch_state 
+state_ccw                 USES STRING.Running.state.CCW..7 printf 
+                                Motor_set_angle StateMachine_switch_state 
+state_drop                USES delay STRING.Running.state.DROP..8 printf 
+                                DISABLE_MAGNET StateMachine_switch_state 
+Motor_init                USES PID_init Timer_init 
+Motor_set_angle           USES PID_set_setpoint Timer_update Motor_get_angle 
+                                Timer_get_seconds PID_update bound_f SET_MOTOR 
+                                PID_is_steady_state Motor_break 
+Motor_get_angle           USES ADC_run ADC_get_value _ILSEXT _FSFLOAT _FADD 
+                                _FMUL 
+Motor_break               USES BREAK_MOTOR 
 F_ADDKL                   USES F_XGKL F_NORMK 
 _FADD                     USES F_PULK F_PULL F_ADDKL F_PSHK 
 _FSUB                     USES _FADD 
@@ -1656,8 +1700,6 @@ DEPENDENCY TREE
  |     | 
  |     +- PWM_init            
  |     |    
- |     +- PID_init            
- |     |    
  |     +- ADC_init            
  |     |    
  |     +- Timing_init         
@@ -1674,14 +1716,22 @@ DEPENDENCY TREE
  |     |        |    
  |     |        +- _lDivMod            
  |     |             
- |     +- Timer_init          
+ |     +- Motor_init          
  |     |  | 
- |     |  +- Timer_reset         
- |     |  |    
- |     |  +- Timing_get_count    
- |     |       
+ |     |  +- PID_init            
+ |     |  |  | 
+ |     |  |  +- PID_clear_prev_errors
+ |     |  |       
+ |     |  +- Timer_init          
+ |     |     | 
+ |     |     +- Timer_reset         
+ |     |     |    
+ |     |     +- Timing_get_count    
+ |     |          
  |     +- StateMachine_init   
- |     |    
+ |     |  | 
+ |     |  +- Timer_init           (see above)
+ |     |     
  |     +- delay               
  |     |  | 
  |     |  +- _ILSEXT              (see above)
@@ -1690,152 +1740,164 @@ DEPENDENCY TREE
  |     |       
  |     +- StateMachine_run    
  |        | 
- |        +- printf              
- |        |  | 
- |        |  +- TERMIO_PutChar      
- |        |  |    
- |        |  +- set_printf          
- |        |  |    
- |        |  +- vprintf             
- |        |     | 
- |        |     +- _out                
- |        |     |    
- |        |     +- _CASE_SEARCH_8_BYTE 
- |        |     |    
- |        |     +- _CASE_DIRECT_BYTE   
- |        |     |    
- |        |     +- _CASE_SEARCH_8      
- |        |     |    
- |        |     +- _ILSEXT              (see above)
- |        |     |  
- |        |     +- _LNEG               
- |        |     |    
- |        |     +- _LCMP_P             
- |        |     |    
- |        |     +- _FNEG               
- |        |     |    
- |        |     +- frexpf              
- |        |     |  | 
- |        |     |  +- F_PULL              
- |        |     |  |    
- |        |     |  +- F_TLK               
- |        |     |  |    
- |        |     |  +- F_FREXP             
- |        |     |  |  | 
- |        |     |  |  +- F_NORMK             
- |        |     |  |     | 
- |        |     |  |     +- F_MAXK              
- |        |     |  |        | 
- |        |     |  |        +- F_CLRK              
- |        |     |  |             
- |        |     |  +- F_PSHK              
- |        |     |       
- |        |     +- _FMUL               
- |        |     |  | 
- |        |     |  +- F_PULK              
- |        |     |  |    
- |        |     |  +- F_PULL               (see above)
- |        |     |  |  
- |        |     |  +- F_MULKL             
- |        |     |  |  | 
- |        |     |  |  +- F_CLRK               (see above)
- |        |     |  |  |  
- |        |     |  |  +- F_NORMK              (see above)
- |        |     |  |     
- |        |     |  +- F_PSHK               (see above)
- |        |     |     
- |        |     +- _FADD               
- |        |     |  | 
- |        |     |  +- F_PULK               (see above)
- |        |     |  |  
- |        |     |  +- F_PULL               (see above)
- |        |     |  |  
- |        |     |  +- F_ADDKL             
- |        |     |  |  | 
- |        |     |  |  +- F_XGKL              
- |        |     |  |  |    
- |        |     |  |  +- F_NORMK              (see above)
- |        |     |  |     
- |        |     |  +- F_PSHK               (see above)
- |        |     |     
- |        |     +- _BDIVMODS           
- |        |     |    
- |        |     +- Ten                 
- |        |     |  | 
- |        |     |  +- _FMUL                (see above)
- |        |     |     
- |        |     +- _FUTRUNC            
- |        |     |  | 
- |        |     |  +- _FSTRUNC            
- |        |     |     | 
- |        |     |     +- F_PULK               (see above)
- |        |     |     |  
- |        |     |     +- F_TOLONGK           
- |        |     |     |    
- |        |     |     +- L_PSHK              
- |        |     |        | 
- |        |     |        +- L_NEGK              
- |        |     |           | 
- |        |     |           +- _NEG_P               (see above)
- |        |     |              
- |        |     +- _FUFLOAT            
- |        |     |  | 
- |        |     |  +- UL_PULK             
- |        |     |  |    
- |        |     |  +- F_FRLONGK           
- |        |     |  |    
- |        |     |  +- F_PSHK               (see above)
- |        |     |     
- |        |     +- _FSUB               
- |        |     |  | 
- |        |     |  +- _FADD                (see above)
- |        |     |     
- |        |     +- _LDIVU              
- |        |     |  | 
- |        |     |  +- _lDivMod             (see above)
- |        |     |     
- |        |     +- _FCMP               
- |        |     |    
- |        |     +- _LMODU              
- |        |        | 
- |        |        +- _lDivMod             (see above)
- |        |           
  |        +- StateMachine_printstate
  |        |  | 
  |        |  +- _CASE_CHECKED_BYTE  
  |        |  |    
- |        |  +- printf               (see above)
- |        |     
+ |        |  +- printf              
+ |        |     | 
+ |        |     +- TERMIO_PutChar      
+ |        |     |    
+ |        |     +- set_printf          
+ |        |     |    
+ |        |     +- vprintf             
+ |        |        | 
+ |        |        +- _out                
+ |        |        |    
+ |        |        +- _CASE_SEARCH_8_BYTE 
+ |        |        |    
+ |        |        +- _CASE_DIRECT_BYTE   
+ |        |        |    
+ |        |        +- _CASE_SEARCH_8      
+ |        |        |    
+ |        |        +- _ILSEXT              (see above)
+ |        |        |  
+ |        |        +- _LNEG               
+ |        |        |    
+ |        |        +- _LCMP_P             
+ |        |        |    
+ |        |        +- _FNEG               
+ |        |        |    
+ |        |        +- frexpf              
+ |        |        |  | 
+ |        |        |  +- F_PULL              
+ |        |        |  |    
+ |        |        |  +- F_TLK               
+ |        |        |  |    
+ |        |        |  +- F_FREXP             
+ |        |        |  |  | 
+ |        |        |  |  +- F_NORMK             
+ |        |        |  |     | 
+ |        |        |  |     +- F_MAXK              
+ |        |        |  |        | 
+ |        |        |  |        +- F_CLRK              
+ |        |        |  |             
+ |        |        |  +- F_PSHK              
+ |        |        |       
+ |        |        +- _FMUL               
+ |        |        |  | 
+ |        |        |  +- F_PULK              
+ |        |        |  |    
+ |        |        |  +- F_PULL               (see above)
+ |        |        |  |  
+ |        |        |  +- F_MULKL             
+ |        |        |  |  | 
+ |        |        |  |  +- F_CLRK               (see above)
+ |        |        |  |  |  
+ |        |        |  |  +- F_NORMK              (see above)
+ |        |        |  |     
+ |        |        |  +- F_PSHK               (see above)
+ |        |        |     
+ |        |        +- _FADD               
+ |        |        |  | 
+ |        |        |  +- F_PULK               (see above)
+ |        |        |  |  
+ |        |        |  +- F_PULL               (see above)
+ |        |        |  |  
+ |        |        |  +- F_ADDKL             
+ |        |        |  |  | 
+ |        |        |  |  +- F_XGKL              
+ |        |        |  |  |    
+ |        |        |  |  +- F_NORMK              (see above)
+ |        |        |  |     
+ |        |        |  +- F_PSHK               (see above)
+ |        |        |     
+ |        |        +- _BDIVMODS           
+ |        |        |    
+ |        |        +- Ten                 
+ |        |        |  | 
+ |        |        |  +- _FMUL                (see above)
+ |        |        |     
+ |        |        +- _FUTRUNC            
+ |        |        |  | 
+ |        |        |  +- _FSTRUNC            
+ |        |        |     | 
+ |        |        |     +- F_PULK               (see above)
+ |        |        |     |  
+ |        |        |     +- F_TOLONGK           
+ |        |        |     |    
+ |        |        |     +- L_PSHK              
+ |        |        |        | 
+ |        |        |        +- L_NEGK              
+ |        |        |           | 
+ |        |        |           +- _NEG_P               (see above)
+ |        |        |              
+ |        |        +- _FUFLOAT            
+ |        |        |  | 
+ |        |        |  +- UL_PULK             
+ |        |        |  |    
+ |        |        |  +- F_FRLONGK           
+ |        |        |  |    
+ |        |        |  +- F_PSHK               (see above)
+ |        |        |     
+ |        |        +- _FSUB               
+ |        |        |  | 
+ |        |        |  +- _FADD                (see above)
+ |        |        |     
+ |        |        +- _LDIVU              
+ |        |        |  | 
+ |        |        |  +- _lDivMod             (see above)
+ |        |        |     
+ |        |        +- _FCMP               
+ |        |        |    
+ |        |        +- _LMODU              
+ |        |           | 
+ |        |           +- _lDivMod             (see above)
+ |        |              
  |        +- _CASE_CHECKED_BYTE   (see above)
  |        |  
  |        +- state_pickup        
  |        |  | 
- |        |  +- printf               (see above)
- |        |  |  
  |        |  +- delay                (see above)
  |        |  |  
+ |        |  +- printf               (see above)
+ |        |  |  
+ |        |  +- ENABLE_MAGNET       
+ |        |  |    
  |        |  +- StateMachine_switch_state
  |        |       
  |        +- state_cw            
  |        |  | 
  |        |  +- printf               (see above)
  |        |  |  
- |        |  +- StateMachine_set_motor_angle
+ |        |  +- Motor_set_angle     
  |        |  |  | 
  |        |  |  +- PID_set_setpoint    
- |        |  |  |    
+ |        |  |  |  | 
+ |        |  |  |  +- PID_clear_prev_errors (see above)
+ |        |  |  |     
  |        |  |  +- Timer_update        
  |        |  |  |  | 
  |        |  |  |  +- Timing_get_count     (see above)
  |        |  |  |  |  
  |        |  |  |  +- calc_tcnt_diff      
  |        |  |  |       
- |        |  |  +- get_motor_angle     
+ |        |  |  +- Motor_get_angle     
  |        |  |  |  | 
  |        |  |  |  +- ADC_run             
  |        |  |  |  |  | 
- |        |  |  |  |  +- ADC_conversion_complete
- |        |  |  |  |       
+ |        |  |  |  |  +- wait_adc            
+ |        |  |  |  |  |  | 
+ |        |  |  |  |  |  +- ADC_conversion_complete
+ |        |  |  |  |  |       
+ |        |  |  |  |  +- ADC_push_value      
+ |        |  |  |  |  |    
+ |        |  |  |  |  +- ADC_calc_avg        
+ |        |  |  |  |     | 
+ |        |  |  |  |     +- _ILSEXT              (see above)
+ |        |  |  |  |     |  
+ |        |  |  |  |     +- _LDIVS               (see above)
+ |        |  |  |  |        
  |        |  |  |  +- ADC_get_value       
  |        |  |  |  |    
  |        |  |  |  +- _ILSEXT              (see above)
@@ -1884,7 +1946,23 @@ DEPENDENCY TREE
  |        |  |  |  |  
  |        |  |  |  +- _FADD                (see above)
  |        |  |  |  |  
+ |        |  |  |  +- PID_get_prev_error  
+ |        |  |  |  |    
  |        |  |  |  +- _FDIV                (see above)
+ |        |  |  |  |  
+ |        |  |  |  +- PID_push_prev_error 
+ |        |  |  |  |    
+ |        |  |  |  +- PID_get_avg_error   
+ |        |  |  |  |  | 
+ |        |  |  |  |  +- _FADD                (see above)
+ |        |  |  |  |  |  
+ |        |  |  |  |  +- _FDIV                (see above)
+ |        |  |  |  |     
+ |        |  |  |  +- abs_f               
+ |        |  |  |  |  | 
+ |        |  |  |  |  +- _FNEG                (see above)
+ |        |  |  |  |     
+ |        |  |  |  +- _FCMP                (see above)
  |        |  |  |     
  |        |  |  +- bound_f             
  |        |  |  |  | 
@@ -1892,8 +1970,6 @@ DEPENDENCY TREE
  |        |  |  |     
  |        |  |  +- SET_MOTOR           
  |        |  |  |  | 
- |        |  |  |  +- printf               (see above)
- |        |  |  |  |  
  |        |  |  |  +- _FCMP                (see above)
  |        |  |  |  |  
  |        |  |  |  +- _FMUL                (see above)
@@ -1906,26 +1982,30 @@ DEPENDENCY TREE
  |        |  |  |  |  
  |        |  |  |  +- CCW_MOTOR_PWM       
  |        |  |  |       
- |        |  |  +- _FADD                (see above)
- |        |  |  |  
- |        |  |  +- _FCMP                (see above)
- |        |  |     
+ |        |  |  +- PID_is_steady_state 
+ |        |  |  |    
+ |        |  |  +- Motor_break         
+ |        |  |     | 
+ |        |  |     +- BREAK_MOTOR         
+ |        |  |          
  |        |  +- StateMachine_switch_state (see above)
  |        |     
  |        +- state_ccw           
  |        |  | 
  |        |  +- printf               (see above)
  |        |  |  
- |        |  +- StateMachine_set_motor_angle (see above)
+ |        |  +- Motor_set_angle      (see above)
  |        |  |  
  |        |  +- StateMachine_switch_state (see above)
  |        |     
  |        +- state_drop          
  |           | 
- |           +- printf               (see above)
- |           |  
  |           +- delay                (see above)
  |           |  
+ |           +- printf               (see above)
+ |           |  
+ |           +- DISABLE_MAGNET      
+ |           |    
  |           +- StateMachine_switch_state (see above)
  |              
  +- _Startup            
@@ -1940,6 +2020,6 @@ STATISTIC SECTION
 
 ExeFile:
 --------
-Number of blocks to be downloaded: 6
-Total size of all blocks to be downloaded: 5772
+Number of blocks to be downloaded: 7
+Total size of all blocks to be downloaded: 6170
 

@@ -18,7 +18,7 @@
 
 #define PRESCALER (3) // Prescale value mask (0-7)
 
-void Timer_test() {
+/*void Timer_test() {
   Timing timing;
   Timer timer;
   
@@ -32,9 +32,9 @@ void Timer_test() {
    printf("Seconds: %f\n", Timer_get_seconds(&timer));
     delay(125);
   }
-}
+}*/
 
-void PID_test() {
+/*void PID_test() {
   float seconds, pid_output, measured_val;
   int i;
   Timing timing_s;
@@ -68,9 +68,9 @@ void PID_test() {
 	    delay(120);
          
   } // loop forever
-}
+}*/
 
-void PID_PWM_ADC_test() {
+/*void PID_PWM_ADC_test() {
   float seconds, pid_output, measured_val;
   int i;
   long int clockrate; 
@@ -111,28 +111,22 @@ void PID_PWM_ADC_test() {
 	    delay(120);
          
   } // loop forever
-}
+}*/
 
 void StateMachine_test(){
-  float seconds, pid_output, measured_val;
-  int i;
-  long int clockrate; 
-  
   ADC adc_s;
   ADC* adc = &adc_s; 
   Timing timing_s;
   Timing* timing = &timing_s;
   Motor motor_s;
   Motor* motor = &motor_s;
-  PID pid_s;
-  PID* pid = &pid_s;
   StateMachine statemachine_s;
   StateMachine* statemachine = &statemachine_s;
   
   PWM_init();
   ADC_init(adc); 
   Timing_init(timing, PRESCALER);
-  Motor_init(motor, timing);
+  Motor_init(motor, timing, adc, 2);
   StateMachine_init(statemachine, timing, motor, adc);
   
   delay(100);
@@ -150,7 +144,7 @@ void ADC_test(){
   ADC_init(adc);
   delay(100);
   for(;;){
-   ADC_run(adc);
+   ADC_run(adc, 2);
    for(i=1;i<2;i++){
      printf("sensor %d: %d\n", i, ADC_get_value(adc, i));
    }
