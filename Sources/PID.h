@@ -31,6 +31,7 @@ void PID_set_Kd(PID* this, float Kd);
 //returns a boolean depending on whether the PID is in a steady state
 char PID_is_steady_state(PID* this);
 
+char PID_calc_steady_state(PID* this);
 void PID_push_prev_error(PID* this, float error);
 float PID_get_avg_error(PID* this);
 float PID_get_prev_error(PID* this);

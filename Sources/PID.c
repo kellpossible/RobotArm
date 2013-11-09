@@ -63,6 +63,17 @@ void PID_init(PID* this, float Kp, float Ki, float Kd, float SS_threshold){
 	this->SS_threshold = SS_threshold;
 }
 
+char PID_calc_steady_state(PID* this){
+    int i;
+    char above_threshold = 1;
+    for(i=0;i<MAX_PREV_ERRORS;i++){
+        if(abs_f(this->previous_errors[i]) > this->SS_threshold){
+            above_threshold = 0;
+        }
+    }
+    return above_threshold;
+}
+
 /*Should I be keeping track of dt in here?*/
 float PID_update(PID* this, float measured_value, float dt) {
   float return_value = 0;
@@ -82,7 +93,7 @@ float PID_update(PID* this, float measured_value, float dt) {
 	
 	//calculate is steady state...
 	//printf("err: %f th: %f\n", abs_f(avg_error), this->SS_threshold);
-	if(abs_f(PID_get_avg_error(this)) < this->SS_threshold){
+	if(PID_calc_steady_state(this)){
 	  printf("is_SS\n");
 	 this->is_SS = 1; 
 	}
