@@ -17,7 +17,7 @@ float bound_f(float input, float min, float max){
 
 float abs_f(float val){
   if(val < 0.0f){
-    return -val;
+    return -1.0f * val;
   }else{
     return val;
   }

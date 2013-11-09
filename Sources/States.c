@@ -73,35 +73,37 @@ void StateMachine_run(StateMachine* this){
 
 //state where the magnet is getting picked up
 void state_pickup (StateMachine* this){
-  delay(200);
+  delay(20);
   printf("Running state PICKUP\n");
   ENABLE_MAGNET();
-  delay(500);
-  StateMachine_switch_state(this, STATE_CW);
+  delay(50);
+  StateMachine_switch_state(this, STATE_CCW);
 }
 
 //state where the arm is moving clockwise
 void state_cw (StateMachine* this){
   printf("Running state CW\n");
-  Motor_set_angle(this->motor, 0.0f);
+  Motor_set_angle(this->motor, 5.0f);
+  printf("Stopped at: %f\n", Motor_get_angle(this->motor));
   
-  StateMachine_switch_state(this, STATE_DROP);
+  StateMachine_switch_state(this, STATE_PICKUP);
 }
 
 //state where the arm is moving counter-clockwise
 void state_ccw (StateMachine* this){
   printf("Running state CCW\n");
   
-  Motor_set_angle(this->motor, 90.0f);
+  Motor_set_angle(this->motor, 100.0f);
+  printf("Stopped at: %f\n", Motor_get_angle(this->motor));
   
-  StateMachine_switch_state(this, STATE_PICKUP);
+  StateMachine_switch_state(this, STATE_DROP);
 }
 
 //state where the arm is moving counter-clockwise
 void state_drop (StateMachine* this){
-  delay(200);
+  delay(50);
   printf("Running state DROP\n");
   DISABLE_MAGNET();
-  delay(500);
-  StateMachine_switch_state(this, STATE_CCW);
+  delay(50);
+  StateMachine_switch_state(this, STATE_CW);
 }

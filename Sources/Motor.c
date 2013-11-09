@@ -13,15 +13,25 @@ void Motor_init(Motor* this, Timing* timing,
 ADC* adc, int adc_port){
  this->pid = &(this->pid_s);
  //default motor pid
- PID_init(this->pid, 0.5f, 0.0f, 0.0f, 18.0f); 
- this->timer = &(this->timer_s);
- Timer_init(this->timer, timing);
+ //Works!!!
+ //PID_init(this->pid, 0.5f, 0.0f, 0.0f, 0.4f);
+ 
+// KD works goooooood!
+ PID_init(this->pid, 1.3f, 0.0f, 2.0f, 0.2f); 
+ 
+ //KI
+ //PID_init(this->pid, 1.8f, 0.0f, 0.0f, 25.0f); 
+ 
  this->adc = adc;
  this->adc_port = adc_port;
 }
 
 PID* Motor_get_pid(Motor* this){
   return this->pid;
+}
+
+void Motor_set_accuracy(Motor* this, float accuracy){
+  PID_set_SS_threshold(this->pid, accuracy);
 }
 
 /* Would be good to have this spawn a new thread 
@@ -46,7 +56,7 @@ void Motor_set_angle(Motor* this, float target_angle){
    
    //printf("Angle: %f\n", sensor_angle);
    
-   //printf("Error: %f\n", PID_get_prev_error(this->pid));
+   //printf("Error: %f\n", PID_get_avg_error(this->pid));
    //printf("Avg Error: %f\n", PID_get_avg_error(this->pid));
    //printf("SS: %i\n", (int)PID_is_steady_state(this->pid));
    

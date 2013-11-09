@@ -23,5 +23,6 @@ PID* Motor_get_pid(Motor* this);
 void Motor_set_angle(Motor* this, float target_angle);
 float Motor_get_angle(Motor* this);
 void Motor_break(Motor* this);
+void Motor_set_accuracy(Motor* this, float accuracy);
 
 #endif //MOTOR_H

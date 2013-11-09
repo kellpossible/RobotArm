@@ -60,25 +60,34 @@ void PID_init(PID* this, float Kp, float Ki, float Kd, float SS_threshold){
 	PID_clear_prev_errors(this);
 	
 	this->is_SS = 0;
-	this->SS_threshold;
+	this->SS_threshold = SS_threshold;
 }
 
 /*Should I be keeping track of dt in here?*/
 float PID_update(PID* this, float measured_value, float dt) {
   float return_value = 0;
+  
+  //calculate difference between actual (measured) value
+  // and desired value (setpoint)
 	float error = this->setpoint - measured_value;
+	
+	// track error over time, scaled to the timer interval
 	this->integral = this->integral + error*dt;
 	
 	//need to multiply numerator by 1000?
+  // determine the amount of change from the last time checked
 	this->derivative = (error - PID_get_prev_error(this))/dt;
 	PID_push_prev_error(this, error);
 	
 	
 	//calculate is steady state...
+	//printf("err: %f th: %f\n", abs_f(avg_error), this->SS_threshold);
 	if(abs_f(PID_get_avg_error(this)) < this->SS_threshold){
+	  printf("is_SS\n");
 	 this->is_SS = 1; 
 	}
 	
+	//calculate output value required to get to desired value
 	return_value += this->Kp * error;
 	return_value +=	this->Ki * this->integral;
 	return_value += this->Kd * this->derivative;
@@ -104,6 +113,10 @@ void PID_set_Ki(PID* this, float Ki){
 }
 void PID_set_Kd(PID* this, float Kd){
   this->Kd;
+}
+
+void PID_set_SS_threshold(PID* this, float SS_threshold){
+  this->SS_threshold = SS_threshold;
 }
 
 //returns a boolean depending on whether the PID is in a steady state

@@ -1,7 +1,7 @@
 #ifndef PID_H
 #define PID_H
 
-#define MAX_PREV_ERRORS 8
+#define MAX_PREV_ERRORS 10
 
 struct PID {
 	float Kp;
@@ -35,6 +35,7 @@ void PID_push_prev_error(PID* this, float error);
 float PID_get_avg_error(PID* this);
 float PID_get_prev_error(PID* this);
 void PID_clear_prev_errors(PID* this);
+void PID_set_SS_threshold(PID* this, float SS_threshold);
 
 void PID_print_errors(PID* this);
 
